@@ -1,0 +1,43 @@
+<doctype html>
+<html>
+  <head></head>
+  <body>
+    <form>
+      <input type="text" class="message">
+      <button type="submit">Envoie</button>
+    </form>
+    <ul class="messages"></ul>
+    <script src="bower_components/socket.io-client/socket.io.js"></script>
+    <script>
+      var messages = document.querySelector('.messages');
+      var message = document.querySelector('.message');
+      var form = document.querySelector('form');
+      var button = document.querySelector('button');
+
+      var write = function(options) {
+        var message = document.createElement('li');
+        message.innerHTML = options.server ? options.message.italics() : options.message;
+        messages.appendChild(message);
+      };
+
+      var onFormSubmit = function(callback) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+          callback(event);
+        }, false);
+      };
+
+      var socket = io();
+      socket.on('message', function(message) {
+        write({message: message, server: true});
+        button.disabled = false;
+      });
+
+      onFormSubmit(function(event) {
+        write({message: message.value, server: false});
+        socket.emit('message', message.value);
+        button.disabled = true;
+      });
+    </script>
+  </body>
+</html>

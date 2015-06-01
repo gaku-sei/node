@@ -1,0 +1,15 @@
+<doctype html>
+<html>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <ul>
+      <% for(var i in fruits) { %>
+        <% if(fruits[i] !== 'banane') { %>
+          <li><%= fruits[i] %></li>
+        <% } %>
+      <% } %>
+    </ul>
+  </body>
+</html>
